@@ -12,7 +12,8 @@ namespace eTickets.Models
 		public string Description { get; set; }
 		public byte[] Logo{ get; set; }
 
+		public ICollection<Movie> Movies { get; set; }
 
 
-	}
+}
 }

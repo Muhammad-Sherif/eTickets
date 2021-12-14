@@ -1,4 +1,5 @@
-﻿using eTickets.Models;
+﻿using eTickets.Data;
+using eTickets.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,14 +13,16 @@ namespace eTickets.Controllers
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
+		private readonly AppDbContext _context;
 
-		public HomeController(ILogger<HomeController> logger)
+		public HomeController(AppDbContext context)
 		{
-			_logger = logger;
+			_context = context;
 		}
 
 		public IActionResult Index()
 		{
+			
 			return View();
 		}
 

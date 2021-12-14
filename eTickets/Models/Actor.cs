@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,6 +15,7 @@ namespace eTickets.Models
 		public string Bio { get; set; }
 		public byte[] Image { get; set; }
 
-
+		public ICollection<Movie> Movies { get; set; }
+		public ICollection<MoviesActors> MoviesActors { get; set; }
 	}
 }
