@@ -8,7 +8,7 @@ namespace eTickets.Models
 	public class Genre
 	{
 		public int Id { get; set; }
-		public int Name { get; set; }
+		public string Name { get; set; }
 		public ICollection<Movie> Movies{ get; set; }
 		public ICollection<MoviesGenres> MoviesGenres { get; set; }
 
