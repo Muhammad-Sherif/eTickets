@@ -1,0 +1,35 @@
+﻿@model GenreCreateViewModel
+
+@{
+	ViewData["title"] = "Create Genre";
+}
+
+
+
+
+<div class="row text">
+	<div class="col-md-8 offset-2">
+		<p>
+			<h1>Create a Genre</h1>
+		</p>
+		<div class="row">
+			<div class="col-md-8 offset-2">
+				<form asp-action="Create">
+					<div class="form-group">
+						<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+						<label asp-for="Name" class="control-label"></label>
+						<input asp-for="Name" class="form-control" />
+						<span asp-validation-for="Name" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<input type="submit" value="Create" class="btn btn-outline-success" />
+						<a asp-action="Index" class="btn btn-outline-secondary">Back To Genres</a>
+					</div>
+				</form>
+			</div>
+		</div>	
+	</div>
+</div>
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

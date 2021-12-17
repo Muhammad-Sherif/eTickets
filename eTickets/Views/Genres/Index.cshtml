@@ -1,0 +1,46 @@
+﻿@model IEnumerable<GenreViewModel>
+@{
+	ViewData["title"] = "Genres";
+}
+
+<h2>
+	<i class="bi bi-tags"></i>
+	Genres
+</h2>
+
+<a asp-action="Create" class="btn btn-primary" >
+	<i class="bi bi-plus"></i>Add Genre
+</a>
+
+<hr />
+@if (!Model.Any())
+{
+	<div class="alert alert-warning text-center" role="alert">
+		<i class="bi bi-exclamation-triangle"></i>
+		No Genres found!
+	</div>
+}
+else 
+{
+
+	<table class="table text-center" >
+		<thead>
+			<tr>
+				<th scope="col">Name</th>
+				<th scope="col">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var genre in Model)
+			{
+				<tr>
+					<td class="align-middle">@genre.Name</td>
+					<td class="align-middle">
+						<a  asp-action="Edit"  asp-route-id="@genre.Id" class="btn btn-outline-primary"><i class="bi bi-pencil-square"></i>Edit </a>
+						<a  asp-action="Delete" asp-route-id="@genre.Id" class="btn btn-danger text-white"><i class="bi bi-trash"></i>Delete </a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
