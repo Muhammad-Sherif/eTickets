@@ -24,8 +24,8 @@ namespace eTickets.Controllers
 		}
 		public async Task<IActionResult> Index()
 		{
-			var genresViewModels = _mapper.Map<IEnumerable<GenreViewModel>>(await _context.Genres.GetAllAsync());
-			return View(genresViewModels);
+			var genresViewModel = _mapper.Map<IEnumerable<GenreViewModel>>(await _context.Genres.GetAllAsync());
+			return View(genresViewModel);
 		}
 		public IActionResult Create()
 		{
@@ -34,63 +34,64 @@ namespace eTickets.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Create(GenreCreateViewModel  genreCreateViewModel)
 		{
-			if(ModelState.IsValid)
+			if(!ModelState.IsValid)
 			{
-				var genre = _mapper.Map<Genre>(genreCreateViewModel);
-				await _context.Genres.AddAsync(genre);
-				_context.SaveChanges();
-				_toastr.AddSuccessToastMessage("Genre created successfully");
-				return RedirectToAction("Index");
+				return View(genreCreateViewModel);
 			}
-			return View(genreCreateViewModel);
+			var genre = _mapper.Map<Genre>(genreCreateViewModel);
+			await _context.Genres.AddAsync(genre);
+			_context.SaveChanges();
+			_toastr.AddSuccessToastMessage("Genre created successfully");
+			return RedirectToAction(nameof(Index));
 		}
 		public async Task<IActionResult> Edit(int id)
 		{
-			if(ModelState.IsValid)
+			if(!ModelState.IsValid)
 			{
-				var genre = await _context.Genres.GetByIdAsync(id);
-				if(genre == null)
-				{
-					_toastr.AddErrorToastMessage("No genre found with this id");
-					return RedirectToAction("Index");
-				}
-				var genreEditViewModel = _mapper.Map<GenreEditViewModel>(genre);
-				return View(genreEditViewModel);
+				_toastr.AddErrorToastMessage("Genre id must be number");
+				return RedirectToAction(nameof(Index));
 			}
-			_toastr.AddErrorToastMessage("Genre id must be number");
-			return RedirectToAction("Index");
+			var genre = await _context.Genres.GetByIdAsync(id);
+			if(genre == null)
+			{
+				_toastr.AddErrorToastMessage("No genre found with this id");
+				return RedirectToAction(nameof(Index));
+			}
+			var genreEditViewModel = _mapper.Map<GenreEditViewModel>(genre);
+			return View(genreEditViewModel);
 		}
 		[HttpPost]
 		public IActionResult Edit(GenreEditViewModel genreEditViewModel)
 		{
-			if (ModelState.IsValid)
+			if (!ModelState.IsValid)
 			{
-				var genre = _mapper.Map<Genre>(genreEditViewModel);
-				_context.Genres.Update(genre);
-				_context.SaveChanges();
-				_toastr.AddSuccessToastMessage("Genre edited successfully");
-				return RedirectToAction("Index");
+				return View(genreEditViewModel);
 			}
-			return View(genreEditViewModel);
+			var genre = _mapper.Map<Genre>(genreEditViewModel);
+			_context.Genres.Update(genre);
+			_context.SaveChanges();
+			_toastr.AddSuccessToastMessage("Genre edited successfully");
+			return RedirectToAction(nameof(Index));
+
 		}
 		public async Task<IActionResult> Delete(int id)
 		{
-			if (ModelState.IsValid)
+			if (!ModelState.IsValid)
 			{
-				var genre = await _context.Genres.GetByIdAsync(id);
-				if (genre == null)
-				{
-					_toastr.AddErrorToastMessage("No genre found with this id");
-					return RedirectToAction("Index");
-				}
-				_context.Genres.Delete(genre);
-				_context.SaveChanges();
-				_toastr.AddSuccessToastMessage("Genre Deleted successfully");
-				return RedirectToAction("Index");
-
+				_toastr.AddErrorToastMessage("Genre id must be number");
+				return RedirectToAction(nameof(Index));
 			}
-			_toastr.AddErrorToastMessage("Genre id must be number");
-			return RedirectToAction("Index");
+			var genre = await _context.Genres.GetByIdAsync(id);
+			if (genre == null)
+			{
+				_toastr.AddErrorToastMessage("No genre found with this id");
+				return RedirectToAction(nameof(Index));
+			}
+			_context.Genres.Delete(genre);
+			_context.SaveChanges();
+			_toastr.AddSuccessToastMessage("Genre Deleted successfully");
+			return RedirectToAction(nameof(Index));
+
 		}
 	}
 }
