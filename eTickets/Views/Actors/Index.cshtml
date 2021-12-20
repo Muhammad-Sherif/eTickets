@@ -1,0 +1,60 @@
+﻿@model IEnumerable<ActorViewModel>
+@{
+	ViewData["Title"] = "Actors";
+	
+}
+
+
+
+<h2>
+	<i class="bi bi-tags"></i>
+	Actors
+
+	<a asp-action="Create" class="btn btn-primary float-right">
+		<i class="bi bi-plus"></i>Add Actor
+	</a>
+</h2>
+
+<hr />
+
+
+
+
+@if (!Model.Any())
+{
+	<div class="alert alert-warning text-center" role="alert">
+		<i class="bi bi-exclamation-triangle"></i>
+		No Actors found!
+	</div>
+}
+else
+{
+	<table class="table text-center">
+		<thead>
+			<tr>
+				<th scope="col">Image</th>
+				<th scope="col">First Name</th>
+				<th scope="col">Last Name</th>
+				<th scope="col">Bio</th>
+				<th scope="col">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var actor in Model)
+			{
+			<tr>
+				<td class="align-middle">
+					<img class="rounded-circle" src="data:image\/*;base64,@(Convert.ToBase64String(actor.Image))" alt="Actor Image" style="max-width: 150px" />
+				</td>
+				<td class="align-middle">@actor.FirstName</td>
+				<td class="align-middle">@actor.LastName</td>
+				<td class="align-middle">@actor.Bio</td>
+				<td class="align-middle">
+					<a asp-action="Edit" asp-route-id="@actor.Id" class="btn btn-outline-primary"><i class="bi bi-pencil-square"></i>Edit </a>
+					<a asp-action="Delete" asp-route-id="@actor.Id" class="btn btn-danger text-white"><i class="bi bi-trash"></i>Delete </a>
+				</td>
+			</tr>
+			}
+		</tbody>
+	</table>
+}

@@ -1,0 +1,66 @@
+﻿@model ActorCreateViewModel
+
+@{
+	ViewData["Title"] = "Create Actor";
+}
+
+
+<h1>Create an Actor</h1>
+<hr />
+
+<section class="row justify-content-between">
+	<div class="col-md-5 ">
+		<form asp-action="Create" enctype="multipart/form-data">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group" en>
+				<label asp-for="FirstName" class="control-label"></label>
+				<input asp-for="FirstName" class="form-control" />
+				<span asp-validation-for="FirstName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="LastName" class="control-label"></label>
+				<input asp-for="LastName" class="form-control" />
+				<span asp-validation-for="LastName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Bio" class="control-label"></label>
+				<textarea asp-for="Bio" class="form-control" rows="4"></textarea>
+				<span asp-validation-for="Bio" class="text-danger"></span>
+			</div>
+			<div class="custom-file ">
+				<input asp-for="Image"  class="custom-file-input" />
+				<label asp-for="Image" class="custom-file-label"></label>
+				<span asp-validation-for="Image" class="text-danger"></span>
+			</div>
+
+			<div class="form-group mt-4">
+				<input type="submit" value="Create" class="btn btn-primary" />
+				<a asp-action="Index" class="btn btn-secondary">Back To Actors</a>
+			</div>
+		</form>
+	</div>
+	<div class="col-md-5">
+		<div id="image-container" class="d-none">
+			<img src="" alt="Actor Image" class="img-thumbnail"/>
+		</div>
+	</div>
+</section>
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+	<script>
+		var imageInput = document.getElementById('Image');
+		var imageContainer = document.getElementById('image-container');
+
+		imageInput.onchange = function () { 
+
+			var imageName = imageInput.value.split("\\").pop();
+			var imageUrl = window.URL.createObjectURL(this.files[0])
+			imageInput.nextElementSibling.textContent = imageName; 
+			imageContainer.firstElementChild.src = imageUrl;
+			imageContainer.classList.remove('d-none');
+			
+		}; 
+	
+	</script>
+}
+
