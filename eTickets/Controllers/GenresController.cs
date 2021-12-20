@@ -46,11 +46,6 @@ namespace eTickets.Controllers
 		}
 		public async Task<IActionResult> Edit(int id)
 		{
-			if(!ModelState.IsValid)
-			{
-				_toastr.AddErrorToastMessage("Genre id must be number");
-				return RedirectToAction(nameof(Index));
-			}
 			var genre = await _context.Genres.GetByIdAsync(id);
 			if(genre == null)
 			{
@@ -76,11 +71,7 @@ namespace eTickets.Controllers
 		}
 		public async Task<IActionResult> Delete(int id)
 		{
-			if (!ModelState.IsValid)
-			{
-				_toastr.AddErrorToastMessage("Genre id must be number");
-				return RedirectToAction(nameof(Index));
-			}
+			
 			var genre = await _context.Genres.GetByIdAsync(id);
 			if (genre == null)
 			{
