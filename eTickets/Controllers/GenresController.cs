@@ -56,13 +56,21 @@ namespace eTickets.Controllers
 			return View(genreEditViewModel);
 		}
 		[HttpPost]
-		public IActionResult Edit(GenreEditViewModel genreEditViewModel)
+		public async Task<IActionResult> Edit(GenreEditViewModel genreEditViewModel)
 		{
 			if (!ModelState.IsValid)
 			{
 				return View(genreEditViewModel);
 			}
-			var genre = _mapper.Map<Genre>(genreEditViewModel);
+
+			var genre = await _context.Genres.GetByIdAsync(genreEditViewModel.Id);
+			if(genre == null)
+			{
+				_toastr.AddErrorToastMessage("No genre found with this id");
+				return RedirectToAction(nameof(Index));
+
+			}
+			genre = _mapper.Map(genreEditViewModel, genre);
 			_context.Genres.Update(genre);
 			_context.SaveChanges();
 			_toastr.AddSuccessToastMessage("Genre edited successfully");
