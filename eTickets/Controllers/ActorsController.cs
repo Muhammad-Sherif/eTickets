@@ -67,11 +67,6 @@ namespace eTickets.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Edit(ActorEditViewModel actorEditViewModel)
 		{
-			if(!ModelState.IsValid)
-			{
-				return View(actorEditViewModel);
-			}
-
 			var actor = await _context.Actors.GetByIdAsync(actorEditViewModel.Id);
 
 			if (actor == null)
@@ -79,6 +74,13 @@ namespace eTickets.Controllers
 				_toastr.AddErrorToastMessage("No actor found with this id");
 				return RedirectToAction(nameof(Index));
 			}
+
+			if(!ModelState.IsValid)
+			{
+				actorEditViewModel.Image = actor.Image;
+				return View(actorEditViewModel);
+			}
+
 
 			actor = _mapper.Map(actorEditViewModel, actor);
 			_context.Actors.Update(actor);
