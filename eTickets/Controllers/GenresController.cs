@@ -35,23 +35,25 @@ namespace eTickets.Controllers
 		public async Task<IActionResult> Create(GenreCreateViewModel  genreCreateViewModel)
 		{
 			if(!ModelState.IsValid)
-			{
 				return View(genreCreateViewModel);
-			}
+
+
 			var genre = _mapper.Map<Genre>(genreCreateViewModel);
 			await _context.Genres.AddAsync(genre);
 			_context.SaveChanges();
 			_toastr.AddSuccessToastMessage("Genre created successfully");
 			return RedirectToAction(nameof(Index));
 		}
-		public async Task<IActionResult> Edit(int id)
+		public async Task<IActionResult> Edit(int? id)
 		{
+			if (id == null)
+				return View("BadRequest");
+
 			var genre = await _context.Genres.GetByIdAsync(id);
+
 			if(genre == null)
-			{
-				_toastr.AddErrorToastMessage("No genre found with this id");
-				return RedirectToAction(nameof(Index));
-			}
+				return View("NotFound");
+
 			var genreEditViewModel = _mapper.Map<GenreEditViewModel>(genre);
 			return View(genreEditViewModel);
 		}
@@ -59,17 +61,13 @@ namespace eTickets.Controllers
 		public async Task<IActionResult> Edit(GenreEditViewModel genreEditViewModel)
 		{
 			if (!ModelState.IsValid)
-			{
 				return View(genreEditViewModel);
-			}
 
 			var genre = await _context.Genres.GetByIdAsync(genreEditViewModel.Id);
-			if(genre == null)
-			{
-				_toastr.AddErrorToastMessage("No genre found with this id");
-				return RedirectToAction(nameof(Index));
 
-			}
+			if(genre == null)
+				return View("NotFound");
+
 			genre = _mapper.Map(genreEditViewModel, genre);
 			_context.Genres.Update(genre);
 			_context.SaveChanges();
@@ -77,15 +75,16 @@ namespace eTickets.Controllers
 			return RedirectToAction(nameof(Index));
 
 		}
-		public async Task<IActionResult> Delete(int id)
+		public async Task<IActionResult> Delete(int? id)
 		{
-			
+			if (id == null)
+				return View("BadRequest");
+
 			var genre = await _context.Genres.GetByIdAsync(id);
+
 			if (genre == null)
-			{
-				_toastr.AddErrorToastMessage("No genre found with this id");
-				return RedirectToAction(nameof(Index));
-			}
+				return View("NotFound");
+
 			_context.Genres.Delete(genre);
 			_context.SaveChanges();
 			_toastr.AddSuccessToastMessage("Genre Deleted successfully");

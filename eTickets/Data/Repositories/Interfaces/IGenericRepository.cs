@@ -8,8 +8,8 @@ namespace eTickets.Data.Repositories.Interfaces
 {
 	public interface IGenericRepository<T> where T : class
 	{
-		T GetById(int id);
-		public Task<T> GetByIdAsync(int id);
+		T GetById(int? id);
+		public Task<T> GetByIdAsync(int? id);
 		IEnumerable<T> GetAll();
 		public Task<IEnumerable<T>> GetAllAsync();
 

@@ -41,9 +41,9 @@ namespace eTickets.Controllers
 		public async Task<IActionResult> Create(ActorCreateViewModel actorCreateViewModel)
 		{
 			if (!ModelState.IsValid)
-			{
 				return View(actorCreateViewModel);
-			}
+
+
 			var actor = _mapper.Map<Actor>(actorCreateViewModel);
 			await _context.Actors.AddAsync(actor);
 			_context.SaveChanges();
@@ -51,15 +51,16 @@ namespace eTickets.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		public async Task<IActionResult> Edit(int id)
+		public async Task<IActionResult> Edit(int? id)
 		{
-			
+			if(id == null)
+				return View("BadRequest");
+
 			var actor = await _context.Actors.GetByIdAsync(id);
+
 			if(actor == null)
-			{
-				_toastr.AddErrorToastMessage("No actor found with this id");
-				return RedirectToAction(nameof(Index));
-			}
+				return View("NotFound");
+
 			var actorEditViewModel = _mapper.Map<ActorEditViewModel>(actor);
 			return View(actorEditViewModel);
 
@@ -70,12 +71,9 @@ namespace eTickets.Controllers
 			var actor = await _context.Actors.GetByIdAsync(actorEditViewModel.Id);
 
 			if (actor == null)
-			{
-				_toastr.AddErrorToastMessage("No actor found with this id");
-				return RedirectToAction(nameof(Index));
-			}
+				return View("NotFound");
 
-			if(!ModelState.IsValid)
+			if (!ModelState.IsValid)
 			{
 				actorEditViewModel.Image = actor.Image;
 				return View(actorEditViewModel);
@@ -88,16 +86,16 @@ namespace eTickets.Controllers
 			_toastr.AddSuccessToastMessage("Actor edited successfully");
 			return RedirectToAction(nameof(Index));
 		}
-		public async Task<IActionResult> Delete(int id)
+		public async Task<IActionResult> Delete(int? id)
 		{
+			if (id == null)
+				return View("BadRequest");
 
 			var actor = await _context.Actors.GetByIdAsync(id);
 
 			if (actor == null)
-			{
-				_toastr.AddErrorToastMessage("No actor found with this id");
-				return RedirectToAction(nameof(Index));
-			}
+				return View("NotFound");
+
 			_context.Actors.Delete(actor);
 			_context.SaveChanges();
 			_toastr.AddSuccessToastMessage("Actor Deleted successfully");
