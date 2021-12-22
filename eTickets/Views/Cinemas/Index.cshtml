@@ -1,0 +1,60 @@
+﻿@model IEnumerable<CinemaViewModel>
+@{
+	ViewData["Title"] = "Cinemas";
+
+}
+
+
+
+
+
+<h2>
+	<i class="bi bi-tags"></i>
+	Cinemas
+
+	<a asp-action="Create" class="btn btn-primary float-right">
+		<i class="bi bi-plus"></i>Add Cinema
+	</a>
+</h2>
+
+<hr />
+
+
+
+
+@if (!Model.Any())
+{
+<div class="alert alert-warning text-center" role="alert">
+	<i class="bi bi-exclamation-triangle"></i>
+	No Cinemas found!
+</div>
+}
+else
+{
+	<table class="table text-center">
+		<thead>
+			<tr>
+				<th scope="col">Logo</th>
+				<th scope="col">Name</th>
+				<th scope="col">Description</th>
+				<th scope="col">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var cinema in Model)
+			{
+				<tr>
+					<td class="align-middle">
+						<img class="rounded-circle" src="data:image\/*;base64,@(Convert.ToBase64String(cinema.Logo))" alt="cinema Image" style="max-width: 150px" />
+					</td>
+					<td class="align-middle">@cinema.Name</td>
+					<td class="align-middle">@cinema.Description</td>
+					<td class="align-middle">
+						<a asp-action="Edit" asp-route-id="@cinema.Id" class="btn btn-outline-primary"><i class="bi bi-pencil-square"></i>Edit </a>
+						<a asp-action="Delete" asp-route-id="@cinema.Id" class="btn btn-danger text-white"><i class="bi bi-trash"></i>Delete </a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}

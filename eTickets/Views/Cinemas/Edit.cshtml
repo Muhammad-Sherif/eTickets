@@ -1,0 +1,62 @@
+﻿@model CinemaEditViewModel
+
+@{
+	ViewData["Title"] = "Edit Cinema";
+}
+
+
+<h1>Edit Cinema</h1>
+<hr />
+
+<section class="row justify-content-between">
+	<div class="col-md-5 ">
+		<form asp-action="Edit" enctype="multipart/form-data">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<input asp-for="Id" class="form-control">
+			</div>
+			<div class="form-group">
+				<label asp-for="Name" class="control-label"></label>
+				<input asp-for="Name" class="form-control" />
+				<span asp-validation-for="Name" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Description" class="control-label"></label>
+				<textarea asp-for="Description" class="form-control" rows="4"></textarea>
+				<span asp-validation-for="Description" class="text-danger"></span>
+			</div>
+			<div class="custom-file ">
+				<input asp-for="LogoFile" accept=".png, .jpg" class="custom-file-input" />
+				<label asp-for="LogoFile" class="custom-file-label"></label>
+				<span asp-validation-for="LogoFile" class="text-danger"></span>
+			</div>
+			<div class="form-group mt-4">
+				<input type="submit" value="Edit" class="btn btn-primary" />
+				<a asp-action="Index" class="btn btn-secondary">Back To Cinemas</a>
+			</div>
+		</form>
+	</div>
+	<div class="col-md-5">
+		<div id="logo-container">
+			<img src="data:image\/*;base64,@(Convert.ToBase64String(Model.Logo))" alt="Cinema Logo" class="img-thumbnail" />
+		</div>
+	</div>
+</section>
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+	<script>
+		var imageInput = document.getElementById('LogoFile');
+		var imageContainer = document.getElementById('logo-container');
+
+		imageInput.onchange = function () {
+
+			var imageName = imageInput.value.split("\\").pop();
+			var imageUrl = window.URL.createObjectURL(this.files[0])
+			imageInput.nextElementSibling.textContent = imageName;
+			imageContainer.firstElementChild.src = imageUrl;
+
+		};
+
+	</script>
+}
+

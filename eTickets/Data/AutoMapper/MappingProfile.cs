@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eTickets.Data.ViewModels.Actors;
+using eTickets.Data.ViewModels.Cinemas;
 using eTickets.Data.ViewModels.Genres;
 using eTickets.Models;
 using System;
@@ -18,7 +19,6 @@ namespace eTickets.Data.AutoMapper
 			CreateMap<GenreCreateViewModel, Genre>();
 			CreateMap<Genre, GenreEditViewModel>().ReverseMap();
 
-			CreateMap<Actor, ActorViewModel>();
 
 			CreateMap<Actor, ActorViewModel>();
 			CreateMap<ActorCreateViewModel, Actor>().
@@ -46,6 +46,38 @@ namespace eTickets.Data.AutoMapper
 					src.ImageFile.CopyTo(dataStream);
 					return dataStream.ToArray();
 				}));
+
+
+
+
+			CreateMap<Cinema, CinemaViewModel>();
+			CreateMap<CinemaCreateViewModel, Cinema>().
+				ForMember(
+				dest => dest.Logo,
+				options => options.MapFrom((src, dest) =>
+				{
+					using var dataStream = new MemoryStream();
+					src.Logo.CopyTo(dataStream);
+					return dataStream.ToArray();
+				}));
+
+
+
+			CreateMap<Cinema, CinemaEditViewModel>();
+			CreateMap<CinemaEditViewModel, Cinema>().
+				ForMember(
+				dest => dest.Logo,
+				options => options.MapFrom((src, dest) =>
+				{
+					if (src.LogoFile== null)
+						return dest.Logo;
+
+					using var dataStream = new MemoryStream();
+					src.LogoFile.CopyTo(dataStream);
+					return dataStream.ToArray();
+				}));
+
+
 
 
 
