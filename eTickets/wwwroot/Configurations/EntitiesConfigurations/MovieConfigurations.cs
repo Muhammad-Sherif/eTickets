@@ -69,7 +69,7 @@ namespace eTickets.Configurations.EntitiesConfigrations
 			builder.Property(m => m.Name).IsRequired().HasMaxLength(250);
 			builder.Property(m => m.Story).IsRequired().HasMaxLength(2500);
 			builder.Property(m => m.Poster).IsRequired();
-			builder.Property(m => m.Price).HasPrecision(10,2);
+			builder.Property(m => m.Price).HasColumnType("decimal").HasPrecision(10,2);
 		}
 
 
