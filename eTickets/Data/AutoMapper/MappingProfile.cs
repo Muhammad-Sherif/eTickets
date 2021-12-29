@@ -2,6 +2,7 @@
 using eTickets.Data.ViewModels.Actors;
 using eTickets.Data.ViewModels.Cinemas;
 using eTickets.Data.ViewModels.Genres;
+using eTickets.Data.ViewModels.Movies;
 using eTickets.Models;
 using System;
 using System.Collections.Generic;
@@ -76,6 +77,81 @@ namespace eTickets.Data.AutoMapper
 					src.LogoFile.CopyTo(dataStream);
 					return dataStream.ToArray();
 				}));
+
+
+
+
+			CreateMap<Movie, MovieViewModel>();
+
+			CreateMap<MovieCreateViewModel, Movie>().
+				ForMember(
+				dest => dest.Poster,
+				options => options.MapFrom((src, dest) =>
+				{
+					using var dataStream = new MemoryStream();
+					src.Poster.CopyTo(dataStream);
+					return dataStream.ToArray();
+				})).
+				ForMember(
+				dest => dest.MoviesGenres,
+				options => options.MapFrom((src, dest) =>
+				{
+					var moviesGenres = new List<MoviesGenres>();
+					foreach (var id in src.GenresIds)
+						moviesGenres.Add(new MoviesGenres { GenreId = id });
+
+					return moviesGenres;
+				})).
+				ForMember(
+				dest => dest.MoviesActors,
+				options => options.MapFrom((src, dest) =>
+				{
+					var moviesActors = new List<MoviesActors>();
+					foreach (var id in src.ActorsIds)
+						moviesActors.Add(new MoviesActors { ActorId = id });
+
+					return moviesActors;
+				}));
+
+
+
+
+			CreateMap<Movie, MovieEditViewModel>();
+
+			CreateMap<MovieEditViewModel, Movie>().
+				ForMember(
+				dest => dest.Poster,
+				options => options.MapFrom((src, dest) =>
+				{
+					if (src.PosterFile == null)
+						return dest.Poster;
+
+					using var dataStream = new MemoryStream();
+					src.PosterFile.CopyTo(dataStream);
+					return dataStream.ToArray();
+				})).
+				ForMember(
+				dest => dest.MoviesGenres,
+				options => options.MapFrom((src, dest) =>
+				{
+					var moviesGenres = new List<MoviesGenres>();
+					foreach (var id in src.GenresIds)
+						moviesGenres.Add(new MoviesGenres { GenreId = id });
+
+					return moviesGenres;
+				})).
+				ForMember(
+				dest => dest.MoviesActors,
+				options => options.MapFrom((src, dest) =>
+				{
+					var moviesActors = new List<MoviesActors>();
+					foreach (var id in src.ActorsIds)
+						moviesActors.Add(new MoviesActors { ActorId = id });
+
+					return moviesActors;
+				}));
+
+
 
 
 

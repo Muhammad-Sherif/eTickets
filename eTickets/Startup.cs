@@ -1,6 +1,8 @@
 using eTickets.Data;
 using eTickets.Data.Repositories.Implementations;
 using eTickets.Data.Repositories.Interfaces;
+using eTickets.Data.Services.Implementation;
+using eTickets.Data.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,6 +35,7 @@ namespace eTickets
 					Configuration.GetConnectionString("Default")));
 
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
+			services.AddScoped<IMovieServices, MovieServices>();
 			services.AddAutoMapper(typeof(Startup));
 			services.AddControllersWithViews().AddRazorRuntimeCompilation();
 			services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()

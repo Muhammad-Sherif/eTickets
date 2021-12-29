@@ -1,0 +1,107 @@
+﻿@model MovieEditViewModel
+
+@{
+	ViewData["Title"] = "Edit Movie";
+}
+
+
+<h1>Edit  Movie</h1>
+<hr />
+
+<section class="row justify-content-between">
+	<div class="col-md-8 ">
+		<form asp-action="Edit" enctype="multipart/form-data">
+			<div class="row">
+				<div class="col-md-6 ">
+					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+					<div class="form-group">
+						<input asp-for="Id" class="form-control">
+					</div>
+					<div class="form-group" en>
+						<label asp-for="Name" class="control-label"></label>
+						<input asp-for="Name" class="form-control" />
+						<span asp-validation-for="Name" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="Price" class="control-label"></label>
+						<input asp-for="Price" class="form-control" />
+						<span asp-validation-for="Price" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="CinemaId" class="control-label"></label>
+						<select asp-for="CinemaId" asp-items="@(new SelectList(Model.Cinemas , "Id" , "Name"))" class="form-control">
+							<option></option>
+						</select>
+						<span asp-validation-for="CinemaId" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="StartDate" class="control-label"></label>
+						<input asp-for="StartDate" class="form-control" />
+						<span asp-validation-for="StartDate" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="EndDate" class="control-label"></label>
+						<input asp-for="EndDate" class="form-control" />
+						<span asp-validation-for="EndDate" class="text-danger"></span>
+					</div>
+					<div class="custom-file ">
+						<input asp-for="PosterFile" accept=".png, .jpg" class="custom-file-input" />
+						<label asp-for="PosterFile" class="custom-file-label"></label>
+						<span asp-validation-for="PosterFile" class="text-danger"></span>
+					</div>
+
+					<div class="form-group mt-4">
+						<input type="submit" value="Edit" class="btn btn-primary" />
+						<a asp-action="Index" class="btn btn-secondary">Back To Movies</a>
+					</div>
+				</div>
+				<div class="col-md-6 ">
+					<div class="form-group">
+						<label asp-for="GenresIds" class="control-label"></label>
+						<select asp-for="GenresIds" asp-items="@(new SelectList(Model.Genres , "Id" , "Name"))" class="form-control">
+							<option></option>
+						</select>
+						<span asp-validation-for="GenresIds" class="text-danger"></span>
+					</div>
+
+					<div class="form-group">
+						<label asp-for="ActorsIds" class="control-label"></label>
+						<select asp-for="ActorsIds" asp-items="@(new SelectList(Model.Actors , "Id" , "FullName"))" class="form-control">
+							<option></option>
+						</select>
+						<span asp-validation-for="ActorsIds" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="Story" class="control-label"></label>
+						<textarea asp-for="Story" class="form-control" rows="4"></textarea>
+						<span asp-validation-for="Story" class="text-danger"></span>
+					</div>
+			</div>
+		</div>
+
+		</form>
+	</div>
+	<div class="col-md-4">
+		<div id="poster-container">
+			<img src="data:image\/*;base64,@(Convert.ToBase64String(Model.Poster))" alt="Movie Image" class="img-thumbnail" />
+		</div>
+	</div>
+</section>
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+	<script>
+		var imageInput = document.getElementById('PosterFile');
+		var imageContainer = document.getElementById('poster-container');
+
+		imageInput.onchange = function () {
+
+			var imageName = imageInput.value.split("\\").pop();
+			var imageUrl = window.URL.createObjectURL(this.files[0])
+			imageInput.nextElementSibling.textContent = imageName;
+			imageContainer.firstElementChild.src = imageUrl;
+
+		};
+
+	</script>
+}
+
