@@ -12,6 +12,14 @@ namespace eTickets.Models
 		public int Id { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
+		[NotMapped]
+		public string FullName
+		{
+			get
+			{
+				return FirstName + " " + LastName;
+			}
+		}
 		public string Bio { get; set; }
 		public byte[] Image { get; set; }
 
