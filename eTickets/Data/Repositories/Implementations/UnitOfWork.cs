@@ -17,6 +17,8 @@ namespace eTickets.Data.Repositories.Implementations
 		public IGenericRepository<Actor> Actors { get; private set; }
 
 		public IGenericRepository<Genre> Genres { get; private set; }
+		public IGenericRepository<MoviesActors> MoviesActors  { get; private set; }
+		public IGenericRepository<MoviesGenres> MoviesGenres { get; private set; }
 
 		public UnitOfWork(AppDbContext context)
 		{
@@ -25,6 +27,10 @@ namespace eTickets.Data.Repositories.Implementations
 			Actors = new GenericRepository<Actor>(_context);
 			Genres= new GenericRepository<Genre>(_context);
 			Cinemas = new GenericRepository<Cinema>(_context);
+			MoviesActors = new GenericRepository<MoviesActors>(_context);
+			MoviesGenres = new GenericRepository<MoviesGenres>(_context);
+
+
 		}
 		public void Dispose()
 		{

@@ -16,20 +16,38 @@ namespace eTickets.Data.Repositories.Implementations
             _context = context;
 		}
 
-        public IEnumerable<T> GetAll()
-        {
+		public IEnumerable<T> GetAll()
+		{
             return _context.Set<T>().ToList();
+
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
-        {
+		public async Task<IEnumerable<T>> GetAllAsync()
+		{
             return await _context.Set<T>().ToListAsync();
+
         }
+        public IEnumerable<T> GetAll(params Expression<Func<T, object>>[] navigationProperties )
+        {
+
+            IQueryable<T> query = _context.Set<T>();
+            query = navigationProperties.Aggregate(query, (current, navigationProperty) => current.Include(navigationProperty));
+            return query.ToList();
+        }
+
+        public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T,object>>[] navigationProperties )
+        {
+            IQueryable<T> query = _context.Set<T>();
+            query = navigationProperties.Aggregate(query, (current, navigationProperty) => current.Include(navigationProperty));
+            return await query.ToListAsync();
+		}
+
 
         public T GetById(int? id)
         {
             return _context.Set<T>().Find(id);
         }
+
 
         public async Task<T> GetByIdAsync(int? id)
         {
@@ -141,5 +159,7 @@ namespace eTickets.Data.Repositories.Implementations
 
 
         }
+
+		
 	}
 }
