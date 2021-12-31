@@ -24,7 +24,7 @@ namespace eTickets.Data.ViewModels.Movies
 		[Required]
 		[AllowedExtensions(new string[] { ".png", ".jpg" }, ErrorMessage = ".png and .jpg extentions are only allowed")]
 		[MaxFileSize(2)]
-		public IFormFile Poster { get; set; }
+		public IFormFile PosterFile { get; set; }
 
 		[Required , Display(Name = "Start Date")]
 		[DataType(DataType.Date)]

@@ -37,7 +37,7 @@
 		</form>
 	</div>
 	<div class="col-md-5">
-		<div id="logo-container">
+		<div id="image-container">
 			<img src="data:image\/*;base64,@(Convert.ToBase64String(Model.Logo))" alt="Cinema Logo" class="img-thumbnail" />
 		</div>
 	</div>
@@ -46,7 +46,7 @@
 	<partial name="_ValidationScriptsPartial" />
 	<script>
 		var imageInput = document.getElementById('LogoFile');
-		var imageContainer = document.getElementById('logo-container');
+		var imageContainer = document.getElementById('image-container');
 
 		imageInput.onchange = function () {
 

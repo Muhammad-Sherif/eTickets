@@ -18,7 +18,7 @@ namespace eTickets.Data.ViewModels.Cinemas
 		[Required(ErrorMessage = "Cinema Logo is required")]
 		[AllowedExtensions(new string[] { ".png", ".jpg" }, ErrorMessage = ".png and .jpg extentions are only allowed")]
 		[MaxFileSize(2)]
-		public IFormFile Logo { get; set; }
+		public IFormFile LogoFile { get; set; }
 
 	}
 }

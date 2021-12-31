@@ -28,11 +28,10 @@
 				<span asp-validation-for="Bio" class="text-danger"></span>
 			</div>
 			<div class="custom-file ">
-				<input asp-for="Image"  accept=".png, .jpg" class="custom-file-input" />
-				<label asp-for="Image" class="custom-file-label"></label>
-				<span asp-validation-for="Image" class="text-danger"></span>
+				<input asp-for="ImageFile"  accept=".png, .jpg" class="custom-file-input" />
+				<label asp-for="ImageFile" class="custom-file-label"></label>
+				<span asp-validation-for="ImageFile" class="text-danger"></span>
 			</div>
-
 			<div class="form-group mt-4">
 				<input type="submit" value="Create" class="btn btn-primary" />
 				<a asp-action="Index" class="btn btn-secondary">Back To Actors</a>
@@ -48,7 +47,7 @@
 @section Scripts {
 	<partial name="_ValidationScriptsPartial" />
 	<script>
-		var imageInput = document.getElementById('Image');
+		var imageInput = document.getElementById('ImageFile');
 		var imageContainer = document.getElementById('image-container');
 
 		imageInput.onchange = function () { 

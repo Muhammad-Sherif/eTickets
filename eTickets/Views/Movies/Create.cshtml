@@ -43,9 +43,9 @@
 						<span asp-validation-for="EndDate" class="text-danger"></span>
 					</div>
 					<div class="custom-file ">
-						<input asp-for="Poster" accept=".png, .jpg" class="custom-file-input" />
-						<label asp-for="Poster" class="custom-file-label"></label>
-						<span asp-validation-for="Poster" class="text-danger"></span>
+						<input asp-for="PosterFile" accept=".png, .jpg" class="custom-file-input" />
+						<label asp-for="PosterFile" class="custom-file-label"></label>
+						<span asp-validation-for="PosterFile" class="text-danger"></span>
 					</div>
 
 					<div class="form-group mt-4">
@@ -78,7 +78,7 @@
 		</form>
 	</div>
 	<div class="col-md-4">
-		<div id="poster-container" class="d-none">
+		<div id="image-container" class="d-none">
 			<img src="" alt="Movie Image" class="img-thumbnail" />
 		</div>
 	</div>
@@ -86,8 +86,8 @@
 @section Scripts {
 	<partial name="_ValidationScriptsPartial" />
 	<script>
-		var imageInput = document.getElementById('Poster');
-		var imageContainer = document.getElementById('poster-container');
+		var imageInput = document.getElementById('PosterFile');
+		var imageContainer = document.getElementById('image-container');
 
 		imageInput.onchange = function () {
 
