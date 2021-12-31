@@ -74,7 +74,7 @@ namespace eTickets.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Edit(MovieEditViewModel movieEditViewModel)
 		{
-			var movie = await _context.Movies.GetByIdAsync(movieEditViewModel.Id);
+			var movie = await _context.Movies.FirstOrDefaultAsync(m=>m.Id == movieEditViewModel.Id , m=>m.MoviesActors , m => m.MoviesGenres);
 
 			if (movie == null)
 				return View("NotFound");
@@ -85,8 +85,6 @@ namespace eTickets.Controllers
 				return View(await _movieServices.PopulateEditFormDropListsAsync(movieEditViewModel));
 			}
 			movie = _mapper.Map(movieEditViewModel, movie);
-			_context.MoviesActors.DeleteRange(_context.MoviesActors.Find(mv => mv.MoiveId == movieEditViewModel.Id));
-			_context.MoviesGenres.DeleteRange(_context.MoviesGenres.Find(mg => mg.MoiveId == movieEditViewModel.Id));
 			_context.Movies.Update(movie);
 			_context.SaveChanges();
 			_toastr.AddSuccessToastMessage("Movie edited successfully");
