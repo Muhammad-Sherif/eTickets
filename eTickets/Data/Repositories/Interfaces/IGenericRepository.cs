@@ -10,6 +10,9 @@ namespace eTickets.Data.Repositories.Interfaces
 	{
 		T GetById(int? id);
 		public Task<T> GetByIdAsync(int? id);
+		public T FirstOrDefault(Expression<Func<T, bool>> criteria, params Expression<Func<T, object>>[] navigationProperties);
+		public Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> criteria, params Expression<Func<T, object>>[] navigationProperties);
+
 		IEnumerable<T> GetAll(params Expression<Func<T, object>>[] navigationProperties);
 		public Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] navigationProperties);
 

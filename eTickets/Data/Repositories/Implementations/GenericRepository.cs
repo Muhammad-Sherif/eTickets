@@ -47,6 +47,7 @@ namespace eTickets.Data.Repositories.Implementations
         {
             return _context.Set<T>().Find(id);
         }
+		
 
 
         public async Task<T> GetByIdAsync(int? id)
@@ -54,6 +55,19 @@ namespace eTickets.Data.Repositories.Implementations
             return await _context.Set<T>().FindAsync(id);
         }
 
+		public T FirstOrDefault(Expression<Func<T, bool>> criteria, params Expression<Func<T, object>>[] navigationProperties)
+		{
+            IQueryable<T> query = _context.Set<T>();
+            query = navigationProperties.Aggregate(query, (current, navigationProperty) => current.Include(navigationProperty));
+            return query.FirstOrDefault(criteria);
+        }
+
+		public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> criteria, params Expression<Func<T, object>>[] navigationProperties)
+		{
+            IQueryable<T> query = _context.Set<T>();
+            query = navigationProperties.Aggregate(query, (current, navigationProperty) => current.Include(navigationProperty));
+            return await query.FirstOrDefaultAsync(criteria);
+        }
         
         public IEnumerable<T> Find(Expression<Func<T, bool>> criteria, string[] includes = null)
         {
@@ -160,6 +174,5 @@ namespace eTickets.Data.Repositories.Implementations
 
         }
 
-		
 	}
 }
