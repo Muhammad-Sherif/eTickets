@@ -1,5 +1,6 @@
 ﻿using eTickets.Data.CustomDataAnnotation;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +11,7 @@ namespace eTickets.Data.ViewModels.Cinemas
 {
 	public class CinemaEditViewModel
 	{
-		[Required]
+		[Required , HiddenInput]
 		public int Id { get; set; }
 
 		[Required, StringLength(250)]
