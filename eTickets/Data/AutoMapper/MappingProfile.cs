@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using eTickets.Data.Services.Implementation;
+using eTickets.Data.Services.Interfaces;
 using eTickets.Data.ViewModels.Actors;
 using eTickets.Data.ViewModels.Cinemas;
 using eTickets.Data.ViewModels.Genres;
@@ -14,150 +16,87 @@ namespace eTickets.Data.AutoMapper
 {
 	public class MappingProfile : Profile
 	{
+		private readonly IFileServices _fileServices;
 		public MappingProfile()
+		{
+			_fileServices = new FileServices(); // bad practice 
+
+			GenreMapping();
+			CinemaMapping();
+			ActorMapping();
+			MovieMapping();
+			
+
+		}
+		private void GenreMapping()
 		{
 			CreateMap<Genre, GenreViewModel>();
 			CreateMap<GenreCreateViewModel, Genre>();
 			CreateMap<Genre, GenreEditViewModel>().ReverseMap();
-
+		}
+		private void ActorMapping()
+		{
 
 			CreateMap<Actor, ActorViewModel>();
 			CreateMap<ActorCreateViewModel, Actor>().
 				ForMember(
-				dest => dest.Image, 
-				options => options.MapFrom((src, dest) =>
-				{
-					using var dataStream = new MemoryStream();
-					src.Image.CopyTo(dataStream);
-					return dataStream.ToArray();
-				}));
+				dest => dest.Image,
+				options => options.MapFrom(src => _fileServices.ConvertToByteArray(src.ImageFile)));
 
 
-			
 			CreateMap<Actor, ActorEditViewModel>();
 			CreateMap<ActorEditViewModel, Actor>().
 				ForMember(
 				dest => dest.Image,
-				options => options.MapFrom((src, dest) =>
-				{
-					if (src.ImageFile == null)
-						return dest.Image;
-					
-					using var dataStream = new MemoryStream();
-					src.ImageFile.CopyTo(dataStream);
-					return dataStream.ToArray();
-				}));
+				options => options.MapFrom((src, dest) => src.ImageFile == null ? dest.Image : _fileServices.ConvertToByteArray(src.ImageFile)));
 
-
-
-
+		}
+		private void CinemaMapping()
+		{
 			CreateMap<Cinema, CinemaViewModel>();
 			CreateMap<CinemaCreateViewModel, Cinema>().
 				ForMember(
 				dest => dest.Logo,
-				options => options.MapFrom((src, dest) =>
-				{
-					using var dataStream = new MemoryStream();
-					src.Logo.CopyTo(dataStream);
-					return dataStream.ToArray();
-				}));
-
-
+				options => options.MapFrom(src => _fileServices.ConvertToByteArray(src.LogoFile)));
 
 			CreateMap<Cinema, CinemaEditViewModel>();
 			CreateMap<CinemaEditViewModel, Cinema>().
 				ForMember(
 				dest => dest.Logo,
-				options => options.MapFrom((src, dest) =>
-				{
-					if (src.LogoFile== null)
-						return dest.Logo;
+				options => options.MapFrom((src, dest) => src.LogoFile == null ? dest.Logo : _fileServices.ConvertToByteArray(src.LogoFile)));
 
-					using var dataStream = new MemoryStream();
-					src.LogoFile.CopyTo(dataStream);
-					return dataStream.ToArray();
-				}));
-
-
+		}
+		private void MovieMapping()
+		{
 
 
 			CreateMap<Movie, MovieViewModel>();
-
-			CreateMap<MovieCreateViewModel, Movie>().
-				ForMember(
+			CreateMap<MovieCreateViewModel, Movie>()
+				.ForMember(
 				dest => dest.Poster,
-				options => options.MapFrom((src, dest) =>
-				{
-					using var dataStream = new MemoryStream();
-					src.Poster.CopyTo(dataStream);
-					return dataStream.ToArray();
-				})).
-				ForMember(
+				options => options.MapFrom((src, dest) => _fileServices.ConvertToByteArray(src.PosterFile)))
+				.ForMember(
 				dest => dest.MoviesGenres,
-				options => options.MapFrom((src, dest) =>
-				{
-					var moviesGenres = new List<MoviesGenres>();
-					foreach (var id in src.GenresIds)
-						moviesGenres.Add(new MoviesGenres { GenreId = id });
-
-					return moviesGenres;
-				})).
-				ForMember(
+				options => options.MapFrom((src, dest) => src.GenresIds.Select(id => new MoviesGenres { GenreId = id, MoiveId = dest.Id }).ToList()))
+				.ForMember(
 				dest => dest.MoviesActors,
-				options => options.MapFrom((src, dest) =>
-				{
-					var moviesActors = new List<MoviesActors>();
-					foreach (var id in src.ActorsIds)
-						moviesActors.Add(new MoviesActors { ActorId = id });
-
-					return moviesActors;
-				}));
-
-
+				options => options.MapFrom((src, dest) => src.ActorsIds.Select(id => new MoviesActors { ActorId = id, MoiveId = dest.Id }).ToList()));
 
 
 			CreateMap<Movie, MovieEditViewModel>();
-
-			CreateMap<MovieEditViewModel, Movie>().
-				ForMember(
+			CreateMap<MovieEditViewModel, Movie>()
+				.ForMember(
 				dest => dest.Poster,
-				options => options.MapFrom((src, dest) =>
-				{
-					if (src.PosterFile == null)
-						return dest.Poster;
-
-					using var dataStream = new MemoryStream();
-					src.PosterFile.CopyTo(dataStream);
-					return dataStream.ToArray();
-				})).
-				ForMember(
+				options => options.MapFrom((src, dest) => src.PosterFile == null ? dest.Poster : _fileServices.ConvertToByteArray(src.PosterFile)))
+				.ForMember(
 				dest => dest.MoviesGenres,
-				options => options.MapFrom((src, dest) =>
-				{
-					var moviesGenres = new List<MoviesGenres>();
-					foreach (var id in src.GenresIds)
-						moviesGenres.Add(new MoviesGenres { GenreId = id });
-
-					return moviesGenres;
-				})).
-				ForMember(
+				options => options.MapFrom((src, dest) => src.GenresIds.Select(id => new MoviesGenres { GenreId = id, MoiveId = src.Id }).ToList()))
+				.ForMember(
 				dest => dest.MoviesActors,
-				options => options.MapFrom((src, dest) =>
-				{
-					var moviesActors = new List<MoviesActors>();
-					foreach (var id in src.ActorsIds)
-						moviesActors.Add(new MoviesActors { ActorId = id });
-
-					return moviesActors;
-				}));
-
-
-
-
-
-
+				options => options.MapFrom((src, dest) => src.ActorsIds.Select(id => new MoviesActors { ActorId = id, MoiveId = src.Id }).ToList()));
 
 
 		}
+		
 	}
 }
