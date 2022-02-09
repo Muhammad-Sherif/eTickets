@@ -19,8 +19,8 @@ namespace eTickets.Data.Repositories.Interfaces
 		IEnumerable<T> GetAll();
 		public Task<IEnumerable<T>> GetAllAsync();
 
-		IEnumerable<T> Find(Expression<Func<T, bool>> criteria, string[] includes = null);
-		Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> criteria, string[] includes = null);
+		IEnumerable<T> Find(Expression<Func<T, bool>> criteria, params Expression<Func<T, object>>[] navigationProperties);
+		Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> criteria, params Expression<Func<T, object>>[] navigationProperties);
 
 		int Count();
 		int Count(Expression<Func<T, bool>> criteria);
