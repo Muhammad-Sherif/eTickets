@@ -3,6 +3,7 @@ using eTickets.Data.Repositories.Implementations;
 using eTickets.Data.Repositories.Interfaces;
 using eTickets.Data.Services.Implementation;
 using eTickets.Data.Services.Interfaces;
+using eTickets.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,9 +31,13 @@ namespace eTickets
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddDbContext<AppDbContext>(options => 
+			services.AddDbContext<AppDbContext>(options =>
 				options.UseSqlServer(
 					Configuration.GetConnectionString("Default")));
+
+			services.AddDefaultIdentity<AppUser>(options =>
+				options.SignIn.RequireConfirmedAccount = false)
+				.AddEntityFrameworkStores<AppDbContext>();
 
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 			services.AddScoped<IMovieServices, MovieServices>();
@@ -40,9 +45,9 @@ namespace eTickets
 			services.AddControllersWithViews().AddRazorRuntimeCompilation();
 			services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()
 			{
-				ProgressBar=true,
+				ProgressBar = true,
 				PositionClass = ToastPositions.TopRight,
-				PreventDuplicates= true,
+				PreventDuplicates = true,
 				CloseButton = true
 			});
 
@@ -65,12 +70,13 @@ namespace eTickets
 			app.UseStaticFiles();
 
 			app.UseRouting();
+			app.UseAuthentication();
 
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{
-				
+
 
 				endpoints.MapControllerRoute(
 					name: "default",
