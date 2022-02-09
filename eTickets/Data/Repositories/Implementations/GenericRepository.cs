@@ -69,26 +69,22 @@ namespace eTickets.Data.Repositories.Implementations
             return await query.FirstOrDefaultAsync(criteria);
         }
         
-        public IEnumerable<T> Find(Expression<Func<T, bool>> criteria, string[] includes = null)
+        public IEnumerable<T> Find(Expression<Func<T, bool>> criteria, params Expression<Func<T, object>>[] navigationProperties)
         {
             IQueryable<T> query = _context.Set<T>();
 
-            if (includes != null)
-                foreach (var include in includes)
-                    query = query.Include(include);
+            query = navigationProperties.Aggregate(query, (current, navigationProperty) => current.Include(navigationProperty));
 
             return query.Where(criteria).ToList();
         }
 
 
-        public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> criteria, string[] includes = null)
+        public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> criteria, params Expression<Func<T, object>>[] navigationProperties)
         {
             IQueryable<T> query = _context.Set<T>();
 
 
-            if (includes != null)
-                foreach (var include in includes)
-                    query = query.Include(include);
+            query = navigationProperties.Aggregate(query, (current, navigationProperty) => current.Include(navigationProperty));
 
             return await query.Where(criteria).ToListAsync();
         }
