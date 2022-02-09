@@ -5,6 +5,7 @@ using eTickets.Data.ViewModels.Actors;
 using eTickets.Data.ViewModels.Cinemas;
 using eTickets.Data.ViewModels.Genres;
 using eTickets.Data.ViewModels.Movies;
+using eTickets.Data.ViewModels.ShoppingCart;
 using eTickets.Models;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,30 @@ namespace eTickets.Data.AutoMapper
 			CinemaMapping();
 			ActorMapping();
 			MovieMapping();
-			
+			ShoppingCartMapping();
+
+		}
+		private void ShoppingCartMapping()
+		{
+
+			CreateMap<ShoppingCart, ShoppingCartViewModel>()
+				.ForMember(
+					dest => dest.TotalPrice,
+					options => options.MapFrom(src => src.CartItems.Sum(d=>d.Amount*d.Movie.Price)))
+				.ForMember(
+					dest => dest.ShoppingCartItem,
+					options => options.MapFrom(src => src.CartItems));
+
+
+			CreateMap<ShoppingCartItem, ShoppingCartItemViewModel>()
+				.ForMember(
+					dest => dest.MoviePrice,
+					options => options.MapFrom(src => src.Movie.Price))
+				.ForMember(
+					dest => dest.MoveName,
+					options => options.MapFrom(src => src.Movie.Name));
+
+
 
 		}
 		private void GenreMapping()

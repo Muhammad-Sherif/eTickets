@@ -11,7 +11,7 @@ namespace eTickets.Models
 		public int Id { get; set; }
 		public string AppUserId { get; set; }
 		public AppUser AppUser { get; set; }
-		public ICollection<ShoppingCartItem> CartItems { get; set; }
+		public IEnumerable<ShoppingCartItem> CartItems { get; set; }
 
 
 	}

@@ -86,9 +86,9 @@ else
 										<i class="bi bi-eye-fill"></i> Show Details
 									</a>
 									<a class="btn btn-success text-white"
-									   asp-controller="Orders"
-									   asp-action="AddItemToShoppingCart"
-									   asp-route-id="@movie.Id">
+									   asp-controller="ShoppingCart"
+									   asp-action="AddItem"
+									   asp-route-MovieId="@movie.Id">
 										<i class="bi bi-cart-plus"></i> Add to Cart (Price @movie.Price.ToString("c"))
 									</a>
 								</p>

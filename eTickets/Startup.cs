@@ -41,6 +41,7 @@ namespace eTickets
 
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 			services.AddScoped<IMovieServices, MovieServices>();
+			services.AddScoped<IShoppingCartService, ShoppingCartService>();
 			services.AddAutoMapper(typeof(Startup));
 			services.AddControllersWithViews().AddRazorRuntimeCompilation();
 			services.AddAuthentication();
