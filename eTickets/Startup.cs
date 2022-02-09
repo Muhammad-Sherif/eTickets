@@ -43,6 +43,7 @@ namespace eTickets
 			services.AddScoped<IMovieServices, MovieServices>();
 			services.AddAutoMapper(typeof(Startup));
 			services.AddControllersWithViews().AddRazorRuntimeCompilation();
+			services.AddAuthentication();
 			services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()
 			{
 				ProgressBar = true,
@@ -73,11 +74,10 @@ namespace eTickets
 			app.UseAuthentication();
 
 			app.UseAuthorization();
-
 			app.UseEndpoints(endpoints =>
 			{
 
-
+				endpoints.MapRazorPages();
 				endpoints.MapControllerRoute(
 					name: "default",
 					pattern: "{controller=Home}/{action=Index}/{id?}");
