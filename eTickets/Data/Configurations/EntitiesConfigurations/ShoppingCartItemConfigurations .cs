@@ -17,6 +17,7 @@ namespace eTickets.Configurations.EntitiesConfigurations
 		
 		private void RelationsConfigurations(EntityTypeBuilder<ShoppingCartItem> builder)
 		{
+			builder.HasIndex(ci => ci.MovieId).IsUnique(false);
 			
 			builder
 				.HasOne(ci => ci.Movie)
