@@ -7,6 +7,7 @@ using eTickets.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,8 +36,9 @@ namespace eTickets
 				options.UseSqlServer(
 					Configuration.GetConnectionString("Default")));
 
-			services.AddDefaultIdentity<AppUser>(options =>
+			services.AddIdentity<AppUser, IdentityRole>(options =>
 				options.SignIn.RequireConfirmedAccount = false)
+				.AddDefaultUI()
 				.AddEntityFrameworkStores<AppDbContext>();
 
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -83,6 +85,9 @@ namespace eTickets
 					name: "default",
 					pattern: "{controller=Home}/{action=Index}/{id?}");
 			});
+
+			  AppDbInitializer.SeddingRolesAndUsersAsync(app).Wait();
+
 		}
 	}
 }
