@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using eTickets.Data.Enums;
 using eTickets.Data.Repositories.Interfaces;
 using eTickets.Data.Services.Interfaces;
 using eTickets.Data.ViewModels.ShoppingCart;
 using eTickets.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
 using System.Security.Claims;
@@ -10,15 +12,13 @@ using System.Threading.Tasks;
 
 namespace eTickets.Controllers
 {
+	[Authorize(Roles = nameof(UserRoles.User))]
 	public class ShoppingCartController : Controller
 	{
 		private readonly IUnitOfWork _context;
 		private readonly IMapper _mapper;
 		private readonly IToastNotification _toastr;
 		private readonly IShoppingCartService _shoppingCartService;
-
-		
-
 
 		public ShoppingCartController(IUnitOfWork context, IMapper mapper, IShoppingCartService shoppingCartService, IToastNotification toastr)
 		{
@@ -27,7 +27,6 @@ namespace eTickets.Controllers
 			_shoppingCartService = shoppingCartService;
 			_toastr = toastr;
 		}
-
 
 		public async Task<IActionResult> Index()
 		{

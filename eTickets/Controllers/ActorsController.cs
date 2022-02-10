@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using eTickets.Data;
+using eTickets.Data.Enums;
 using eTickets.Data.Repositories.Interfaces;
 using eTickets.Data.ViewModels.Actors;
 using eTickets.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
 using System;
@@ -13,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace eTickets.Controllers
 {
+	[Authorize(Roles = nameof(UserRoles.Admin))]
 	public class ActorsController : Controller
 	{
 

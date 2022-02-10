@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using eTickets.Data;
+using eTickets.Data.Enums;
 using eTickets.Data.Repositories.Interfaces;
 using eTickets.Data.Services.Interfaces;
 using eTickets.Data.ViewModels.Movies;
 using eTickets.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NToastNotify;
@@ -13,7 +15,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace eTickets.Controllers
+
 {
+	[Authorize(Roles = nameof(UserRoles.Admin))]
+
 	public class MoviesController : Controller
 	{
 
@@ -29,7 +34,7 @@ namespace eTickets.Controllers
 			_toastr = toastr;
 			_movieServices = movieServices;
 		}
-
+		[AllowAnonymous]
 		public async Task<IActionResult> Index()
 		{
 			var movies = await _context.Movies.GetAllAsync(m => m.Cinema, m => m.Genres);
