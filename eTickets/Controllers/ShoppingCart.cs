@@ -40,6 +40,7 @@ namespace eTickets.Controllers
 		}
 		public IActionResult AddItem(int movieId)
 		{
+
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			var shoppingCart = _shoppingCartService.GetUserShoppingCart(userId);
 			_shoppingCartService.AddItemToShoppingCart(shoppingCart, movieId);
