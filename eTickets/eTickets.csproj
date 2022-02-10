@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Enums\" />
     <Folder Include="Data\Services\Intefaces\" />
     <Folder Include="Data\Services\Interfaces\NewFolder\" />
   </ItemGroup>
