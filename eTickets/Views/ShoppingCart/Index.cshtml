@@ -74,8 +74,6 @@
     </div>
 </div>
 
-
-
 @section Scripts{
 
     <script src="https://www.paypalobjects.com/api/checkout.js"></script>
@@ -86,7 +84,7 @@
             //Configure environment
             env: 'sandbox',
             client: {
-                sandbox:"Ad_Aw962A17BJ3JqDHjvGatPI-GIxec5j2NApEdK7DMplXinoxTL6lpqJSJzVPccvnjK-5__MjOMyheo"
+                sandbox: 'AcKRtgL4i68EZ2ZYuYUx3ilihAg2YhL5dtF_m19A8MjBWVOn6ewNS4M_uV8gA3xi98zTcUq38gUHbVFx'
             },
             //Customize button
             locale: 'en_US',
@@ -110,7 +108,7 @@
             //Execute the payment
             onAuthorize: function (data, actions) {
                 return actions.payment.execute().then(function () {
-                    var url = '@Url.Action("Index", "Home", new { })';
+                    var url = '@Url.Action("Compelete", "Orders", new { })';
                     window.location.href = url;
                 });
             }
