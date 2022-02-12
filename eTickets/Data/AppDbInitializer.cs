@@ -1,4 +1,5 @@
 ﻿using eTickets.Data.Enums;
+using eTickets.Data.Repositories.Interfaces;
 using eTickets.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -17,6 +18,8 @@ namespace eTickets.Data
 		{
 			using (var serviceScope = app.ApplicationServices.CreateScope())
 			{
+
+				var _context = serviceScope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
 				//Roles 
 				var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -44,6 +47,8 @@ namespace eTickets.Data
 					await userManager.CreateAsync(newAdminUser, "Coding@1234?");
 					await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin.ToString());
 					await userManager.AddToRoleAsync(newAdminUser, UserRoles.User.ToString());
+					_context.ShoppingCarts.Add(new ShoppingCart { AppUserId = newAdminUser.Id });
+					_context.SaveChanges();
 
 				}
 
@@ -63,6 +68,9 @@ namespace eTickets.Data
 					};
 					await userManager.CreateAsync(newAppUser, "Coding@1234?");
 					await userManager.AddToRoleAsync(newAppUser, UserRoles.User.ToString());
+					_context.ShoppingCarts.Add(new ShoppingCart { AppUserId = newAppUser.Id});
+					_context.SaveChanges();
+
 				}
 			}
 		}
