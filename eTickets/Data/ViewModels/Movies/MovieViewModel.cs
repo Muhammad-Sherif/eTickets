@@ -12,6 +12,7 @@ namespace eTickets.Data.ViewModels.Movies
 		public string Name { get; set; }
 		public string Story { get; set; }
 		public Cinema Cinema { get; set; }
+		public int Minutes { get; set; }
 		public IList<Genre> Genres { get; set; }
 
 		public Double Price { get; set; }

@@ -61,6 +61,7 @@ else
 								<p class="card-text"><b>Cinema: </b>@movie.Cinema.Name</p>
 								<p class="card-text"><b>Start Date: </b>@movie.StartDate.ToString("dd MMM yy")</p>
 								<p class="card-text"><b>End Date: </b>@movie.EndDate.ToString("dd MMM yy")</p>
+								<p class="card-text"><b> </b><span class="badge bg-success text-white">Durations : @movie.Minutes Minutes</span>
 								<p class="card-text ">
 									<b>Status: </b>
 									@if (DateTime.Now >= movie.StartDate && DateTime.Now <= movie.EndDate)

@@ -29,6 +29,9 @@ namespace eTickets.Data.ViewModels.Movies
 		[Required , Display(Name = "Start Date")]
 		[DataType(DataType.Date)]
 		public DateTime StartDate { get; set; }
+		[Required, Display(Name = "Film Durations(Minutes)")]
+		public int Minutes { get; set; }
+
 
 		[Required, Display(Name = "End Date")]
 		[DataType(DataType.Date)]

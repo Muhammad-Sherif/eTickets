@@ -17,6 +17,8 @@ namespace eTickets.Data.ViewModels.Movies
 		[Required, StringLength(250)]
 
 		public string Name { get; set; }
+		[Required, Display(Name = "Film Durations(Minutes)")]
+		public int Minutes { get; set; }
 		[Required, StringLength(2500)]
 
 		public string Story { get; set; }
