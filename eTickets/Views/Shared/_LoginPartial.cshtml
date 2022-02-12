@@ -32,15 +32,13 @@ else
                     <i class="bi bi-list"></i> Manage Account 
                 </a>
             </li>
+            <li>
+                <a class="dropdown-item" asp-controller="Orders"  asp-action="Index" >
+                    <i class="bi bi-check-circle"></i> Orders 
+                </a>
+            </li>
 
-            @*@if (User.IsInRole("Admin"))
-            {
-                <li>
-                    <a class="dropdown-item" asp-controller="Account" asp-action="Users">
-                        <i class="bi bi-people"></i> Users
-                    </a>
-                </li>
-            }*@
+            
         </ul>
     </div>
     <span style="padding: 5px;"></span>
