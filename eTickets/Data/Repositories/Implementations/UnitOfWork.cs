@@ -21,6 +21,8 @@ namespace eTickets.Data.Repositories.Implementations
 		public IGenericRepository<MoviesGenres> MoviesGenres { get; private set; }
 		public IGenericRepository<ShoppingCart> ShoppingCarts { get; private set; }
 		public IGenericRepository<ShoppingCartItem> ShoppingCartItems { get; private set; }
+		public IGenericRepository<Order> Orders{ get; private set; }
+		public IGenericRepository<OrderItem> OrderItems{ get; private set; }
 
 		public UnitOfWork(AppDbContext context)
 		{
@@ -33,6 +35,8 @@ namespace eTickets.Data.Repositories.Implementations
 			MoviesGenres = new GenericRepository<MoviesGenres>(_context);
 			ShoppingCarts = new GenericRepository<ShoppingCart>(_context);
 			ShoppingCartItems = new GenericRepository<ShoppingCartItem>(_context);
+			Orders = new GenericRepository<Order>(_context);
+			OrderItems = new GenericRepository<OrderItem>(_context);
 
 
 		}

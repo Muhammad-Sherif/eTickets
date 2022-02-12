@@ -16,6 +16,9 @@ namespace eTickets.Data.Repositories.Interfaces
 		IGenericRepository<MoviesGenres> MoviesGenres { get; }
 		IGenericRepository<ShoppingCart> ShoppingCarts { get;}
 		IGenericRepository<ShoppingCartItem> ShoppingCartItems { get; }
+		IGenericRepository<Order> Orders { get; }
+		IGenericRepository<OrderItem> OrderItems { get; }
+
 		int SaveChanges();
 		Task<int> SaveChangesAsync();
 	}
