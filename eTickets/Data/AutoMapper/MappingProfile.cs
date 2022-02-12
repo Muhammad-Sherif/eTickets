@@ -126,6 +126,7 @@ namespace eTickets.Data.AutoMapper
 		private void MovieMapping()
 		{
 
+			CreateMap<Movie, MovieDetailsViewModel>();
 
 			CreateMap<Movie, MovieViewModel>();
 			CreateMap<MovieCreateViewModel, Movie>()

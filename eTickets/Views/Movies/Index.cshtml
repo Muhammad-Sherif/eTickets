@@ -94,7 +94,7 @@ else
 										<i class="bi bi-eye-fill"></i> Show Details
 									</a>
 										
-									<a class="btn btn-success text-white"
+									<a class="btn btn-success text-white  @((DateTime.Now > @movie.EndDate) ? "disabled" : "")" 
 									   asp-controller="ShoppingCart"
 									   asp-action="AddItem"
 									   asp-route-MovieId="@movie.Id">

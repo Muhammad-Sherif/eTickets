@@ -76,6 +76,23 @@ namespace eTickets.Controllers
 			return View(await _movieServices.PopulateEditFormDropListsAsync(movieEditViewModel));
 
 		}
+		public async Task<IActionResult> Details(int? id)
+		{
+			if (id == null)
+				return View("BadRequest");
+
+			var movie = await _context.Movies.FirstOrDefaultAsync(m=>m.Id == id.Value, m=>m.Cinema , m=>m.Genres , m=>m.Actors);
+
+
+			if (movie == null)
+				return View("NotFound");
+
+
+			var MovieDetailsViewModel = _mapper.Map<MovieDetailsViewModel>(movie);
+
+			return View(MovieDetailsViewModel);
+
+		}
 		[HttpPost]
 		public async Task<IActionResult> Edit(MovieEditViewModel movieEditViewModel)
 		{
