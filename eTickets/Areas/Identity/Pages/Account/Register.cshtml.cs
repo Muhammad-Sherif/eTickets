@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using eTickets.Data.Repositories.Interfaces;
+using eTickets.Data.Enums;
 
 namespace eTickets.Areas.Identity.Pages.Account
 {
@@ -23,21 +25,23 @@ namespace eTickets.Areas.Identity.Pages.Account
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
+        private readonly IUnitOfWork _context;
         private readonly IEmailSender _emailSender;
 
-        public RegisterModel(
-            UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager,
-            ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _logger = logger;
-            _emailSender = emailSender;
-        }
+		public RegisterModel(
+			UserManager<AppUser> userManager,
+			SignInManager<AppUser> signInManager,
+			ILogger<RegisterModel> logger,
+			IEmailSender emailSender, IUnitOfWork context)
+		{
+			_userManager = userManager;
+			_signInManager = signInManager;
+			_logger = logger;
+			_emailSender = emailSender;
+			_context = context;
+		}
 
-        [BindProperty]
+		[BindProperty]
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
@@ -84,19 +88,13 @@ namespace eTickets.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, UserRoles.User.ToString());
+                    var shoppingCart = new ShoppingCart { AppUserId = user.Id };
+
+                    _context.ShoppingCarts.Add(shoppingCart);
+                    _context.SaveChanges();
                     _logger.LogInformation("User created a new account with password.");
-
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
+                    
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });

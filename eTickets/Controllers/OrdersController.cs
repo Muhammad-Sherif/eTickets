@@ -51,7 +51,7 @@ namespace eTickets.Controllers
 
 			var order = _mapper.Map<Order>(shoppingCart);
 			_context.Orders.Add(order);
-			_context.ShoppingCarts.Delete(shoppingCart);
+			_context.ShoppingCartItems.DeleteRange(shoppingCart.CartItems);
 			_context.SaveChanges();
 			_toastr.AddSuccessToastMessage("Order completed successfully");
 			return Redirect(nameof(Index));
